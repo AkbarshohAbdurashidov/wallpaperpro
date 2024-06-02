@@ -1,9 +1,9 @@
-import 'dart:typed_data';
+import 'dart:ui';
 
+import 'package:WallpaperPro/pages/main_page.dart';
 import 'package:WallpaperPro/repo/repository.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class PreviewPage extends StatefulWidget {
   final String imageUrl;
@@ -27,9 +27,34 @@ class _PreviewPageState extends State<PreviewPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.white,
-        elevation: 0,
+        flexibleSpace: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 200,
+              sigmaY: 200,
+            ),
+            child: Container(
+              color: Colors.transparent,
+            ),
+          ),
+        ),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: MaterialButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainPage(),
+                ),
+              );
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
+        ),
       ),
       body: CachedNetworkImage(
         fit: BoxFit.cover,
@@ -40,23 +65,48 @@ class _PreviewPageState extends State<PreviewPage> {
           Icons.error,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        isExtended: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(122),
+      floatingActionButton: Container(
+        width: 200,
+        height: 40,
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade600,
+              spreadRadius: 1,
+              blurRadius: 15,
+              offset: const Offset(5, 5),
+            ),
+            const BoxShadow(
+                color: Colors.white,
+                offset: Offset(-5, -5),
+                blurRadius: 15,
+                spreadRadius: 1),
+          ],
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.grey.shade200,
+              Colors.grey.shade300,
+              Colors.grey.shade400,
+              Colors.grey.shade500,
+            ],
+          ),
         ),
-        tooltip: 'Press once to download current image',
-        onPressed: () async {
-          await ImageGallerySaver.saveImage(widget.imageUrl as Uint8List);
-          repo.downloadImage(
-              imageUrl: widget.imageUrl,
-              imageId: widget.imageId,
-              context: context);
-        },
-        child: Icon(Icons.download),
-        backgroundColor: Color.fromARGB(110, 63, 63, 63),
-        foregroundColor: Color.fromARGB(200, 255, 255, 255),
-        elevation: 5.0,
+        child: MaterialButton(
+          hoverColor: Colors.black,
+          onPressed: () async {
+            repo.downloadImage(
+                imageUrl: widget.imageUrl,
+                imageId: widget.imageId,
+                context: context);
+          },
+          child: const Icon(
+            Icons.download,
+            color: Colors.black,
+          ),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

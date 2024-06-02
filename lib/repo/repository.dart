@@ -107,6 +107,12 @@ class Repository {
               duration: const Duration(seconds: 3),
             ),
           );
+        } else {
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("File's not been saved at because:"),
+            duration: Duration(seconds: 3),
+          );
         }
       }
     } catch (_) {}

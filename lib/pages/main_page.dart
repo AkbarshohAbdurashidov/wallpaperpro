@@ -15,15 +15,26 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-const backroundColor = Color.fromARGB(100, 63, 63, 63);
+// const backroundColor = Color.fromARGB(100, 63, 63, 63);
 
 class _MainPageState extends State<MainPage> {
+  // final buttonColor = const LinearGradient(
+  //   begin: Alignment.topLeft,
+  //   end: Alignment.bottomRight,
+  //   colors: [
+  //     Colors.blue,
+  //     Colors.deepPurpleAccent,
+  //     Colors.red,
+  //     Colors.blue,
+  //   ],
+  // );
   TextEditingController textEditingController = TextEditingController();
   late Future<List<Images>> imagesList;
   final ScrollController scrollController = ScrollController();
   final Repository repo = Repository();
   int pageNumber = 1;
   final List<String> categoriesList = [
+    "New",
     "Nature",
     "Abstract",
     "Technology",
@@ -53,9 +64,12 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backroundColor,
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      // Colors.white70.withOpacity(0.8),
       extendBodyBehindAppBar: false,
       appBar: AppBar(
+        centerTitle: true,
+        automaticallyImplyLeading: false,
         flexibleSpace: ClipRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(
@@ -68,18 +82,27 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         elevation: 0,
-        backgroundColor: const Color.fromARGB(100, 63, 63, 63).withAlpha(200),
+        backgroundColor: Theme.of(context)
+            .colorScheme
+            .primary
+            .withOpacity(0.8)
+            .withAlpha(200),
         title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               "Wallpaper",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Text(
               "Pro",
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -109,9 +132,10 @@ class _MainPageState extends State<MainPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: TextField(
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
                           decoration: InputDecoration(
-                            labelStyle: const TextStyle(color: Colors.white),
+                            labelStyle: const TextStyle(color: Colors.black),
                             contentPadding: const EdgeInsets.only(left: 25),
                             labelText: "Type here to search",
                             border: OutlineInputBorder(
@@ -124,7 +148,7 @@ class _MainPageState extends State<MainPage> {
                                 borderRadius: BorderRadius.circular(10)),
                             focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
-                                    color: Colors.yellow, width: 2),
+                                    color: Colors.green, width: 2),
                                 borderRadius: BorderRadius.circular(10)),
                             errorBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
@@ -188,7 +212,7 @@ class _MainPageState extends State<MainPage> {
                                       child: Text(
                                         categoriesList[index],
                                         style: const TextStyle(
-                                          color: Colors.white,
+                                          color: Colors.black,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -240,27 +264,62 @@ class _MainPageState extends State<MainPage> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 10),
                       SafeArea(
-                        child: MaterialButton(
-                          minWidth: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          color: Colors.blue,
-                          textColor: Colors.white,
-                          onPressed: () {
-                            pageNumber++;
-                            imagesList =
-                                repo.getImagesList(pageNumber: pageNumber);
-                            setState(() {});
-                          },
-                          child: const Text("Load more."),
+                        child: Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade600,
+                                spreadRadius: 1,
+                                blurRadius: 15,
+                                offset: const Offset(5, 5),
+                              ),
+                              const BoxShadow(
+                                  color: Colors.white,
+                                  offset: Offset(-5, -5),
+                                  blurRadius: 15,
+                                  spreadRadius: 1),
+                            ],
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.grey.shade200,
+                                Colors.grey.shade300,
+                                Colors.grey.shade400,
+                                Colors.grey.shade500,
+                              ],
+                            ),
+                          ),
+                          child: MaterialButton(
+                            minWidth: 200,
+                            textColor: Colors.white.withOpacity(0.8),
+                            onPressed: () {
+                              pageNumber++;
+                              imagesList =
+                                  repo.getImagesList(pageNumber: pageNumber);
+                              setState(() {});
+                            },
+                            child: const Text(
+                              "Load more",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                          ),
                         ),
-                      )
+                      ),
+                      const SizedBox(height: 10),
                     ],
                   );
                 } else {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: Colors.white70,
+                      backgroundColor: Colors.black,
+                    ),
                   );
                 }
               },
