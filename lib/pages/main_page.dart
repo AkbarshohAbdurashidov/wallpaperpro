@@ -64,7 +64,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.background,
       // Colors.white70.withOpacity(0.8),
       extendBodyBehindAppBar: false,
       appBar: AppBar(
@@ -82,18 +82,14 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
         elevation: 0,
-        backgroundColor: Theme.of(context)
-            .colorScheme
-            .primary
-            .withOpacity(0.8)
-            .withAlpha(200),
-        title: const Row(
+
+        title:  Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               "Wallpaper",
               style: TextStyle(
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -133,9 +129,9 @@ class _MainPageState extends State<MainPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: TextField(
                           style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary),
+                              color: Theme.of(context).colorScheme.secondary),
                           decoration: InputDecoration(
-                            labelStyle: const TextStyle(color: Colors.black),
+                            labelStyle:  TextStyle(color: Theme.of(context).colorScheme.secondary),
                             contentPadding: const EdgeInsets.only(left: 25),
                             labelText: "Type here to search",
                             border: OutlineInputBorder(
@@ -211,8 +207,8 @@ class _MainPageState extends State<MainPage> {
                                     child: Center(
                                       child: Text(
                                         categoriesList[index],
-                                        style: const TextStyle(
-                                          color: Colors.black,
+                                        style: TextStyle(
+                                          color: Theme.of(context).colorScheme.secondary,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
